@@ -18,7 +18,7 @@ class LojaApp:
                                 categoria TEXT,
                                 preco REAL)''')
 
-            # Adicionando produtos para teste
+            # produtos no estoque
             produtos_teste = [
                 ("Carregador USB", "Carregadores de Celular", 19.99),
                 ("Carregador de Parede", "Carregadores de Celular", 15.99),
