@@ -97,7 +97,41 @@ class LojaApp:
     def __init__(self, root, conn):
         self.root = root
         self.conn = conn
+        self.root.title("Sistema de Loja")
         
+        try:
+            self.conn = sqlite3.connect('loja.db')
+            self.c = self.conn.cursor()
+            
+            self.c.execute('''CREATE TABLE IF NOT EXISTS produtos
+                                (id INTEGER PRIMARY KEY,
+                                nome TEXT,
+                                categoria TEXT,
+                                preco REAL)''')
+
+            # produtos no estoque
+            produtos_teste = [
+                ("Carregador USB", "Carregadores de Celular", 19.99),
+                ("Carregador de Parede", "Carregadores de Celular", 15.99),
+                ("Capa Protetora", "Capas para Celular", 12.99),
+                ("Capa de Silicone", "Capas para Celular", 9.99),
+                ("Fone de Ouvido com Fio", "Fones com Fio", 29.99),
+                ("Fone de Ouvido com Microfone", "Fones com Fio", 24.99),
+                ("Fone de Ouvido Bluetooth", "Fones sem Fio", 49.99),
+                ("Fone de Ouvido Bluetooth Esportivo", "Fones sem Fio", 39.99),
+                ("Adaptador HDMI", "Adaptadores de Entrada", 9.99),
+                ("Adaptador VGA", "Adaptadores de Entrada", 7.99)
+            ]
+
+            for produto in produtos_teste:
+                self.c.execute("INSERT INTO produtos (nome, categoria, preco) VALUES (?, ?, ?)", produto)
+
+            self.conn.commit()
+            
+        except Exception as e:
+            messagebox.showerror("Erro", f"Erro ao conectar ao banco de dados: {e}")
+            self.root.destroy()
+            return 
         self.create_widgets()
         self.exibir_produtos()
     
